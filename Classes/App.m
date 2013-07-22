@@ -59,9 +59,9 @@ NSString *defaultPath = @"/Applications/Sublime Text.app/Contents/SharedSupport/
         }
     }
 
-//    if (![prefPanel isVisible]) {
-//        [NSApp terminate:self];
-//    }
+    if (![prefPanel isVisible]) {
+        [NSApp terminate:self];
+    }
 }
 
 -(IBAction)showPrefPanel:(id)sender {

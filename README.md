@@ -1,4 +1,4 @@
-SublimeText 2 URLHandler on OS X
+SublimeText 3 URLHandler on OS X
 =======================
 This application enables SublimeText 2 to open `subl:` urls, as Textmate has as described [here](http://manual.macromates.com/en/using_textmate_from_terminal#url_scheme_html)
 

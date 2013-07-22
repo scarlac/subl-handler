@@ -32,12 +32,16 @@ NSString *defaultPath = @"/Applications/Sublime Text.app/Contents/SharedSupport/
             NSString *line = [params objectForKey:@"line"];
 			if(nil == line)
 				line = @"0";
+			
+            NSString *column = [params objectForKey:@"column"];
+			if(nil == column)
+				column = @"0";
 
             if (file) {
                 NSTask *task = [[NSTask alloc] init];
                 [task setLaunchPath:path];
                 NSString* filePath = [NSString stringWithFormat:@"%@", file];
-                NSString* command = [NSString stringWithFormat:@"%@:%@", filePath, line];
+                NSString* command = [NSString stringWithFormat:@"%@:%@:%@", filePath, line, column];
                 [task setArguments:[NSArray arrayWithObjects:command, nil]];
                 [task launch];
                 [task release];

@@ -4,7 +4,7 @@
 
 @implementation App
 
-NSString *defaultPath = @"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl";
+NSString *defaultPath = @"/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl";
 
 -(void)awakeFromNib {
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
@@ -22,27 +22,35 @@ NSString *defaultPath = @"/Applications/Sublime Text 2.app/Contents/SharedSuppor
 
     if (url && [[url host] isEqualToString:@"open"]) {
         NSDictionary *params = [url dictionaryByDecodingQueryString];
-        NSString* file  = [params objectForKey:@"file"];
+        NSString* file = [params objectForKey:@"file"];
+
+		if(!file) {
+			file = [[params objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+		}
 
         if (file) {
             NSString *line = [params objectForKey:@"line"];
+			if(nil == line)
+				line = @"0";
 
             if (file) {
                 NSTask *task = [[NSTask alloc] init];
                 [task setLaunchPath:path];
-                NSString* filePath = [NSString stringWithFormat:@"%@", file, [line integerValue]];
-                NSString* command = [NSString stringWithFormat:@"show_overlay {\"overlay\": \"goto\", \"text\":\"%@\"}", filePath];
-                [task setArguments:[NSArray arrayWithObjects:@"--command", command , nil]];
+                NSString* filePath = [NSString stringWithFormat:@"%@", file];
+                NSString* command = [NSString stringWithFormat:@"%@:%@", filePath, line];
+                [task setArguments:[NSArray arrayWithObjects:command, nil]];
                 [task launch];
                 [task release];
+				/*
                 NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
-                NSString *appPath = [sharedWorkspace fullPathForApplication:@"Sublime Text 2"];
+                NSString *appPath = [sharedWorkspace fullPathForApplication:@"Sublime Text"];
                 NSString *identifier = [[NSBundle bundleWithPath:appPath] bundleIdentifier];
                 NSArray *selectedApps =
                 [NSRunningApplication runningApplicationsWithBundleIdentifier:identifier];
                 NSRunningApplication *runningApplcation = (NSRunningApplication*)[selectedApps objectAtIndex:0];
                 [runningApplcation activateWithOptions: NSApplicationActivateAllWindows];
                 [runningApplcation setCollectionBehavior: NSWindowCollectionBehaviorMoveToActiveSpace];
+				 */
             }
         }
     }
